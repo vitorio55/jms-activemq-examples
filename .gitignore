@@ -1,0 +1,9 @@
+# Java
+target
+/bin/
+
+# Eclipse
+.settings
+
+# ActiveMQ
+activemq-data
