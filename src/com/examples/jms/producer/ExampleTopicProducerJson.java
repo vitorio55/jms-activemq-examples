@@ -12,17 +12,12 @@ import javax.naming.NamingException;
 
 import com.examples.jms.models.Purchase;
 import com.examples.jms.models.PurchaseFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ExampleTopicProducerObject {
+public class ExampleTopicProducerJson {
 
 	public static void main(String[] args) throws NamingException, JMSException {
-
-		// ---------------------------------------------------------------------------------------
-		// WARNING!!
-		// The approach of passing objects in messages is not advised since malicious objects
-		// might be passed which represents a security problem
-		// ---------------------------------------------------------------------------------------
-
 		InitialContext context = new InitialContext();
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 
@@ -31,18 +26,31 @@ public class ExampleTopicProducerObject {
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination topic = (Destination) context.lookup("topic_object_messages");
+		Destination topic = (Destination) context.lookup("topic_json_messages");
 		MessageProducer producer = session.createProducer(topic); 
 		
-		// We send an object directly. In this case it's a Purchase.
 		Purchase purchase = new PurchaseFactory().generatePurchaseWithValues();
 
-		Message message = session.createObjectMessage(purchase);
+		String purchaseJson = convertPurchaseToJSONString(purchase);
+		Message message = session.createTextMessage(purchaseJson);
 		producer.send(message);
-		
+
 		session.close();
 		connection.close();
 		context.close();
 	}
+		     
+	 private static String convertPurchaseToJSONString(Purchase purchase) {
+         // Using Jackson API              
+         ObjectMapper mapper = new ObjectMapper();
+         String json = null;
+         try {
+             json = mapper.writeValueAsString(purchase);
+             System.out.println("ResultingJSONstring = " + json);
+         } catch (JsonProcessingException e) {
+             e.printStackTrace();
+         }
+         return json;
+	 }
 
 }

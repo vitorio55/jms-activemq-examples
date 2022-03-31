@@ -14,19 +14,23 @@ import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class ExampleTopicConsumer {
+import com.examples.jms.models.Purchase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class ExampleTopicConsumerJson {
 
 	public static void main(String[] args) throws NamingException, JMSException {
 		InitialContext context = new InitialContext();
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 
 		Connection connection = factory.createConnection("user", "user_pwd");
-		connection.setClientID("topic_consumer");
+		connection.setClientID("json_consumer");
 		connection.start();
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Topic topic = (Topic) context.lookup("topic_messages");
+		Topic topic = (Topic) context.lookup("topic_json_messages");
 		
 		// IMPORTANT!!
 		//
@@ -51,11 +55,16 @@ public class ExampleTopicConsumer {
 			@Override
 			public void onMessage(Message message) {			
 				TextMessage textMessage = (TextMessage) message;
+				ObjectMapper mapper = new ObjectMapper();
+				Purchase purchase = null;
 				try {
-					System.out.println(textMessage.getText());
-				} catch (JMSException e) {
+					String json = textMessage.getText();
+					purchase = mapper.readValue(json, Purchase.class);
+				} catch (JMSException | JsonProcessingException e) {
 					e.printStackTrace();
 				}
+				System.out.println("Purchase converted from JSON. It's product code is:");
+				System.out.println(purchase.getProductCode());
 			}
 		});
 

@@ -34,12 +34,12 @@ public class ExampleTopicConsumerSelector {
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 
 		Connection connection = factory.createConnection("user", "user_pwd");
-		connection.setClientID("stock");
+		connection.setClientID("topic_consumer_selector");
 		connection.start();
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		Topic topic = (Topic) context.lookup("store");
+		Topic topic = (Topic) context.lookup("topic_with_property_messages");
 
 		System.out.println("Filter for ebook messages? (y/n)");
 		boolean answer = readYesNoFromTerminal();

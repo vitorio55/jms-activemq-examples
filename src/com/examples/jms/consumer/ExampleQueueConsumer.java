@@ -26,7 +26,7 @@ public class ExampleQueueConsumer {
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination queue = (Destination) context.lookup("financial");
+		Destination queue = (Destination) context.lookup("queue_messages");
 		MessageConsumer consumer = session.createConsumer(queue); 
 
 		consumer.setMessageListener(new MessageListener() {

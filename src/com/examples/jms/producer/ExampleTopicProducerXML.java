@@ -27,7 +27,7 @@ public class ExampleTopicProducerXML {
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination topic = (Destination) context.lookup("store");
+		Destination topic = (Destination) context.lookup("topic_messages");
 		MessageProducer producer = session.createProducer(topic); 
 		
 		Purchase purchase = new PurchaseFactory().generatePurchaseWithValues();

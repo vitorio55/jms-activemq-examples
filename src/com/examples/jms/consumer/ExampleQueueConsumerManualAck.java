@@ -26,7 +26,7 @@ public class ExampleQueueConsumerManualAck {
 		boolean transacted = false;
 		Session session = connection.createSession(transacted, Session.CLIENT_ACKNOWLEDGE);
 
-		Destination queue = (Destination) context.lookup("financial");
+		Destination queue = (Destination) context.lookup("queue_messages");
 		MessageConsumer consumer = session.createConsumer(queue); 
 
 		consumer.setMessageListener(new MessageListener() {

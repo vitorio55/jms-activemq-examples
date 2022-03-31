@@ -43,7 +43,7 @@ public class ExampleTopicProducerXMLWithProperty {
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination topic = (Destination) context.lookup("store");
+		Destination topic = (Destination) context.lookup("topic_with_property_messages");
 		MessageProducer producer = session.createProducer(topic); 
 
 		Purchase purchase = new PurchaseFactory().generatePurchaseWithValues();

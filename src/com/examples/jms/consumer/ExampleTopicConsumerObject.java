@@ -41,12 +41,12 @@ public class ExampleTopicConsumerObject {
 		factory.setTrustedPackages(newPackages);
 
 		Connection connection = factory.createConnection("user", "user_pwd");
-		connection.setClientID("commercial");
+		connection.setClientID("topic_consumer_object");
 		connection.start();
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Topic topic = (Topic) context.lookup("store");
+		Topic topic = (Topic) context.lookup("topic_object_messages");
 		
 		// IMPORTANT!!
 		//

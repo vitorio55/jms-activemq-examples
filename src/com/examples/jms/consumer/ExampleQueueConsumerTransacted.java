@@ -28,7 +28,7 @@ public class ExampleQueueConsumerTransacted {
 		boolean transacted = true;
 		Session session = connection.createSession(transacted, Session.SESSION_TRANSACTED);
 
-		Destination queue = (Destination) context.lookup("financial");
+		Destination queue = (Destination) context.lookup("queue_messages");
 		MessageConsumer consumer = session.createConsumer(queue); 
 		
 		consumer.setMessageListener(new MessageListener() {

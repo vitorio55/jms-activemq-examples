@@ -21,7 +21,7 @@ public class ExampleDLQConsumer {
 
 		// These credentials are configured in the ActiveMQ's configuration file conf/activemq.xml
 		Connection connection = factory.createConnection("user", "user_pwd");
-		connection.setClientID("commercial");
+		connection.setClientID("dlq_consumer");
 		connection.start();
 
 		boolean transacted = false;
